@@ -1,0 +1,38 @@
+{
+  "name": "lab-api-001",
+  "version": "1.0.0",
+  "description": "Este es un backend de ejemplo",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start.js"
+  },
+  "keywords": [
+    "backend",
+    "ci0137",
+    "test"
+  ],
+  "author": "Daniel Calvo",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.5",
+    "sequelize": "^6.20.1",
+    "swagger-autogen": "^2.21.2",
+    "swagger-ui-express": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "swagger.json"
+    ]
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Pizza Magma",
+    "description": "API de la Pizzería Magma, maneja cuentas y órdenes de los usuarios e items de los menús.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:7500",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/users/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add a user",
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add a user",
+            "schema": {
+              "$ref": "#/definitions/LoginUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/recover-password": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add a user",
+            "schema": {
+              "$ref": "#/definitions/RecoverPassword"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/reset-password": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add a user",
+            "schema": {
+              "$ref": "#/definitions/ResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pizzas/": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/drinks/": {
+      "get": {
+        "tags": [
+          "Drinks"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/accompaniments/": {
+      "get": {
+        "tags": [
+          "Accompaniments"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/deserts/": {
+      "get": {
+        "tags": [
+          "Deserts"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ingredients/": {
+      "get": {
+        "tags": [
+          "Ingredients"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/homePizzas/": {
+      "get": {
+        "tags": [
+          "HomePizzas"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/homeCombos/": {
+      "get": {
+        "tags": [
+          "HomeCombos"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/combos/": {
+      "get": {
+        "tags": [
+          "Combos"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "José Rodríguez Pérez"
+        },
+        "email": {
+          "type": "string",
+          "example": "jose@correo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "patito"
+        }
+      }
+    },
+    "LoginUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "jose@correo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "patito"
+        }
+      }
+    },
+    "RecoverPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "jose@correo.com"
+        }
+      }
+    },
+    "ResetPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "jose@correo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "patito"
+        },
+        "code": {
+          "type": "number",
+          "example": 123456
+        }
+      }
+    }
+  }
+}
