@@ -1,7 +1,7 @@
 
-exports.listDeserts = async (req, res) => {
-  // #swagger.tags = ['Deserts']
-  const deserts = [{
+exports.listDesserts = async (req, res) => {
+  // #swagger.tags = ['Desserts']
+  const desserts = [{
     id: 1,
     name: 'Helado de vainilla',
     description: '3 bolas de helado que se puede pedir con sirope de chocolate o caramelo',
@@ -23,5 +23,5 @@ exports.listDeserts = async (req, res) => {
     image: 'https://ci0137.s3.amazonaws.com/magma/postres/flan.png'
   }
 ]
-  res.json(deserts);
+  res.json(desserts);
 };

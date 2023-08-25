@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
@@ -27,6 +28,14 @@ const doc = {
     },
   },
 };
+
+mongoose.set("strictQuery", false);
+const mongoDB = "mongodb+srv://rpiedra2786:FRZ5zNttoioFfwDy@magma.e7xproq.mongodb.net/magma_db?retryWrites=true&w=majority";
+
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB);
+}
 
 const outputFile = "./swagger.json";
 const endpointsFiles = ["./server.js"];

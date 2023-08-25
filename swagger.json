@@ -194,10 +194,10 @@
         }
       }
     },
-    "/deserts/": {
+    "/desserts/": {
       "get": {
         "tags": [
-          "Deserts"
+          "Desserts"
         ],
         "description": "",
         "parameters": [],
