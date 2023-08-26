@@ -5,7 +5,7 @@
     "description": "API de la Pizzería Magma, maneja cuentas y órdenes de los usuarios e items de los menús.",
     "version": "1.0.0"
   },
-  "host": "localhost:7500",
+  "host": "evening-refuge-56391.herokuapp.com",
   "basePath": "/",
   "schemes": [
     "http",
@@ -152,62 +152,6 @@
         }
       }
     },
-    "/pizzas/": {
-      "get": {
-        "tags": [
-          "Pizzas"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/drinks/": {
-      "get": {
-        "tags": [
-          "Drinks"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/sides/": {
-      "get": {
-        "tags": [
-          "Sides"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/desserts/": {
-      "get": {
-        "tags": [
-          "Desserts"
-        ],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/ingredients/": {
       "get": {
         "tags": [
@@ -222,41 +166,49 @@
         }
       }
     },
-    "/homePizzas/": {
-      "get": {
+    "/orders/create-order": {
+      "post": {
         "tags": [
-          "HomePizzas"
+          "Order"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create an order placed by a customer",
+            "schema": {
+              "$ref": "#/definitions/createOrder"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/homeCombos/": {
+    "/orders/users/{userId}/orders/{orderId}": {
       "get": {
-        "tags": [
-          "HomeCombos"
-        ],
         "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
-        }
-      }
-    },
-    "/combos/": {
-      "get": {
-        "tags": [
-          "Combos"
         ],
-        "description": "",
-        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
