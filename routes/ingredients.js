@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const {
-  listIngredients,
-} = require("../controllers/ingredients");
+const { listIngredients } = require("../controllers/ingredients");
 
-router
-  .route("/")
-  .get(listIngredients);
+router.route("/").get(listIngredients);
 
-  module.exports = router;
+module.exports = router;

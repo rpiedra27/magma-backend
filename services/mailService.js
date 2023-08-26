@@ -13,10 +13,7 @@ const getTransporter = function () {
   return transporter;
 };
 
-exports.sendRecoveryCodeEmail = async (
-  userEmail,
-  randomToken,
-) => {
+exports.sendRecoveryCodeEmail = async (userEmail, randomToken) => {
   const transporter = getTransporter();
   await transporter.sendMail({
     from: "ci0137@psgfanclubcr.com",

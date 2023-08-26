@@ -7,12 +7,11 @@ exports.createOrder = async (req, res) => {
   } */
   try {
     const userPayload = req.body;
-    
+
     res.json(userPayload);
   } catch (error) {
     res.status(500).json({
-      message:
-        "Ocurrió un error al crear la orden",
+      message: "Ocurrió un error al crear la orden",
       error,
     });
   }

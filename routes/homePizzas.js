@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const {
-  listHomePizzas,
-} = require("../controllers/homePizzas");
+const { listHomePizzas } = require("../controllers/homePizzas");
 
-router
-  .route("/")
-  .get(listHomePizzas);
+router.route("/").get(listHomePizzas);
 
-  module.exports = router;
+module.exports = router;

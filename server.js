@@ -2,28 +2,28 @@ const express = require("express");
 const dotenv = require("dotenv");
 const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
-const swaggerFile = require('./swagger.json')
+const swaggerFile = require("./swagger.json");
 const usersRoutes = require("./routes/users");
 const pizzasRoutes = require("./routes/pizzas");
 const drinksRoutes = require("./routes/drinks");
-const accompanimentsRoutes = require("./routes/accompaniments");
+const sidesRoutes = require("./routes/sides");
 const dessertsRoutes = require("./routes/desserts");
 const ingredientsRoutes = require("./routes/ingredients");
 const homePizzasRoutes = require("./routes/homePizzas");
 const homeCombosRoutes = require("./routes/homeCombos");
 const combosRoutes = require("./routes/combos");
-const ordersRoutes = require("./routes/orders")
+const ordersRoutes = require("./routes/orders");
+
 dotenv.config();
 const server = express();
 server.use(express.json());
 server.use(cors());
 //connect();
 
-//Mount routes
 server.use("/users", usersRoutes);
 server.use("/pizzas", pizzasRoutes);
 server.use("/drinks", drinksRoutes);
-server.use("/accompaniments", accompanimentsRoutes);
+server.use("/sides", sidesRoutes);
 server.use("/desserts", dessertsRoutes);
 server.use("/ingredients", ingredientsRoutes);
 server.use("/homePizzas", homePizzasRoutes);
@@ -37,5 +37,7 @@ server.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
 server.listen(process.env.PORT || 8000);
 console.log(
   `The server is listening on http://localhost:${process.env.PORT || 8000}
-  You can navigate the documentation at http://localhost:${process.env.PORT || 8000}/docs`
+  You can navigate the documentation at http://localhost:${
+    process.env.PORT || 8000
+  }/docs`
 );

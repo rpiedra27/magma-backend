@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { listCombos } = require("../controllers/combos");
+const { listSides } = require("../controllers/sides");
 
-router.route("/").get(listCombos);
+router.route("/").get(listSides);
 
 module.exports = router;

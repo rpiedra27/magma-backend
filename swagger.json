@@ -180,10 +180,10 @@
         }
       }
     },
-    "/accompaniments/": {
+    "/sides/": {
       "get": {
         "tags": [
-          "Accompaniments"
+          "Sides"
         ],
         "description": "",
         "parameters": [],
