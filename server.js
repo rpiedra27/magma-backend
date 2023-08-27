@@ -1,35 +1,23 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 const swaggerFile = require("./swagger.json");
+const swaggerUI = require("swagger-ui-express");
+
 const usersRoutes = require("./routes/users");
-const pizzasRoutes = require("./routes/pizzas");
-const drinksRoutes = require("./routes/drinks");
-const sidesRoutes = require("./routes/sides");
-const dessertsRoutes = require("./routes/desserts");
 const ingredientsRoutes = require("./routes/ingredients");
-const homePizzasRoutes = require("./routes/homePizzas");
-const homeCombosRoutes = require("./routes/homeCombos");
-const combosRoutes = require("./routes/combos");
 const ordersRoutes = require("./routes/orders");
+const itemsRoutes = require("./routes/items");
 
 dotenv.config();
 const server = express();
 server.use(express.json());
 server.use(cors());
-//connect();
 
 server.use("/users", usersRoutes);
-server.use("/pizzas", pizzasRoutes);
-server.use("/drinks", drinksRoutes);
-server.use("/sides", sidesRoutes);
-server.use("/desserts", dessertsRoutes);
 server.use("/ingredients", ingredientsRoutes);
-server.use("/homePizzas", homePizzasRoutes);
-server.use("/homeCombos", homeCombosRoutes);
-server.use("/combos", combosRoutes);
 server.use("/orders", ordersRoutes);
+server.use("/items", itemsRoutes);
 
 // Documentation setup
 server.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));

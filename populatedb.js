@@ -26,7 +26,7 @@ async function main() {
   await mongoose.connect(mongoDB);
   console.log("Debug: Should be connected");
   //await createUsers();
-  //await createIngredients();
+  await createIngredients();
   await createItems();
   //await createOrders();
   console.log("Debug: Closing mongoose");
@@ -276,5 +276,47 @@ async function createItems() {
       2500,
       "https://ci0137.s3.amazonaws.com/magma/acompa%C3%B1amientos/pan_tomate_queso.png"
     ),
+  ]);
+}
+
+async function ingredientCreate(index, label, type, price, value) {
+  const ingredient = new Ingredient({
+    label: label,
+    type: type,
+    price: price,
+    value: value,
+  });
+  await ingredient.save();
+  ingredients[index] = ingredient;
+  console.log(`Added ingredient: ${label}`);
+}
+
+async function createIngredients() {
+  console.log("Adding ingredients");
+  await Promise.all([
+    ingredientCreate(0, "Pequeña", "sizes", 1000, "pequeña"),
+    ingredientCreate(1, "Mediana", "sizes", 2000, "mediana"),
+    ingredientCreate(2, "Grande", "sizes", 3000, "grande"),
+    ingredientCreate(3, "Monstruo", "sizes", 4000, "monstruo"),
+    ingredientCreate(4, "Tomate", "sauces", 200, "tomate"),
+    ingredientCreate(5, "Picante", "sauces", 400, "picante"),
+    ingredientCreate(6, "BBQ", "sauces", 400, "bbq"),
+    ingredientCreate(7, "Provolone", "cheeses", 300, "provolone"),
+    ingredientCreate(8, "Parmesano", "cheeses", 400, "parmesano"),
+    ingredientCreate(9, "Mozzarella", "cheeses", 400, "mozzarella"),
+    ingredientCreate(10, "Jamón", "meats", 100, "jamón"),
+    ingredientCreate(11, "Tocineta", "meats", 200, "tocineta"),
+    ingredientCreate(12, "Carne molida", "meats", 200, "carne molida"),
+    ingredientCreate(13, "Pepperoni", "meats", 300, "pepperoni"),
+    ingredientCreate(14, "Pollo", "meats", 200, "pollo"),
+    ingredientCreate(15, "Salchicha", "meats", 250, "salchicha"),
+    ingredientCreate(16, "Cebolla", "vegetables", 50, "cebolla"),
+    ingredientCreate(17, "Chile", "vegetables", 50, "chile"),
+    ingredientCreate(18, "Aceitunas", "vegetables", 100, "aceitunas"),
+    ingredientCreate(19, "Hongos", "vegetables", 100, "hongos"),
+    ingredientCreate(20, "Rodajas de tomate", "vegetables", 50, "rodajas de tomate"),
+    ingredientCreate(21, "Piña", "vegetables", 10000, "piña"),
+    ingredientCreate(22, "Queso extra", "extras", 300, "queso"),
+    ingredientCreate(23, "Salsa extra", "extras", 200, "salsa"),
   ]);
 }

@@ -8,7 +8,6 @@ const {
   listHomePizzas,
   listHomeCombos,
 } = require("../controllers/items");
-
 const router = express.Router();
 
 router.route("/homeCombos").get(listHomeCombos);

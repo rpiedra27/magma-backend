@@ -215,6 +215,104 @@
           }
         }
       }
+    },
+    "/items/homeCombos": {
+      "get": {
+        "tags": [
+          "HomeCombos"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/homePizzas": {
+      "get": {
+        "tags": [
+          "HomePizzas"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/sides": {
+      "get": {
+        "tags": [
+          "Sides"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/pizzas": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/desserts": {
+      "get": {
+        "tags": [
+          "Desserts"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/combos": {
+      "get": {
+        "tags": [
+          "Combos"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/items/drinks": {
+      "get": {
+        "tags": [
+          "Drinks"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "definitions": {
