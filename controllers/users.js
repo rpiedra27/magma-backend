@@ -1,16 +1,32 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { sendRecoveryCodeEmail } = require("../services/mailService");
+const User = require("../models/users");
+const passport = require("passport");
+
 const saltRounds = 10;
 
-exports.createUser = async (req, res) => {
+exports.createUser = async (req, res, next) => {
   // #swagger.tags = ['Users']
   /*  #swagger.parameters['obj'] = {
           in: 'body',
           description: 'Add a user',
           schema: { $ref: '#/definitions/CreateUser' }
   } */
+
+
   try {
+    const user = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      password: await bcrypt.hash(req.body.password, saltRounds),
+    });
+    const result = await user.save();
+    res.redirect("/");
+  } catch (err) {
+    return next(err);
+  }
+  /* try {
     const userPayload = req.body;
     const newUser = {
       name: userPayload.name,
@@ -24,7 +40,7 @@ exports.createUser = async (req, res) => {
         "Ocurrió un error al crear el usuario. Intente nuevamente. Si el error persiste, contacte al administrador del sistema.",
       error,
     });
-  }
+  } */
 };
 
 exports.loginUser = async (req, res) => {
@@ -34,12 +50,13 @@ exports.loginUser = async (req, res) => {
           description: 'Add a user',
           schema: { $ref: '#/definitions/LoginUser' }
   } */
-  const testUser = {
-    name: "Rodrigo",
-    email: "rodrigo.piedra@ucr.ac.cr",
-    password: "$2b$10$RwmQLVkd8YhnfK7paOd3W.oJo5/Zq3UXoIzUsuq.Tyf9pQHi7mzTG",
-  };
-  try {
+
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/ingredients"
+  })
+
+  /* try {
     const userPayload = req.body;
     if (
       userPayload.email !== testUser.email ||
@@ -47,7 +64,7 @@ exports.loginUser = async (req, res) => {
     ) {
       res.status(401).send("Invalid credentials");
       return;
-    }
+    } */
 
     /*
     const roles = await db.UserRole.findAll({ where: { idUsuario: user.id } });
@@ -59,7 +76,6 @@ exports.loginUser = async (req, res) => {
         expiresIn: "10m",
       }
     );
-    */
     res.json({
       //...user.toJSON(),
       //token,
@@ -67,7 +83,7 @@ exports.loginUser = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send("Server error: " + error);
-  }
+  } */
 };
 
 exports.recoverPassword = async (req, res) => {
@@ -119,4 +135,13 @@ exports.resetPassword = async (req, res) => {
   } catch (error) {
     res.status(500).send("Server error: " + error);
   }
+};
+
+exports.logOut = async (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 };

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 exports.checkUserIsAuthenticated = async (req, res, next) => {
   let token;
@@ -56,3 +57,4 @@ exports.checkRoles = (requiredRoles) => {
     next();
   };
 };
+
