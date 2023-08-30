@@ -13,7 +13,6 @@ exports.createUser = async (req, res, next) => {
           schema: { $ref: '#/definitions/CreateUser' }
   } */
 
-
   try {
     const user = new User({
       username: req.body.username,
@@ -24,23 +23,12 @@ exports.createUser = async (req, res, next) => {
     const result = await user.save();
     res.redirect("/");
   } catch (err) {
-    return next(err);
-  }
-  /* try {
-    const userPayload = req.body;
-    const newUser = {
-      name: userPayload.name,
-      email: userPayload.email,
-      password: await bcrypt.hash(userPayload.password, saltRounds),
-    };
-    res.json(newUser);
-  } catch (error) {
     res.status(500).json({
       message:
-        "Ocurrió un error al crear el usuario. Intente nuevamente. Si el error persiste, contacte al administrador del sistema.",
-      error,
+        "Ocurrió un error al crear el usuario. Intente nuevamente. Si el error persiste, contacte al administrador del sistema",
+      err,
     });
-  } */
+  }
 };
 
 exports.loginUser = async (req, res) => {
@@ -53,8 +41,8 @@ exports.loginUser = async (req, res) => {
 
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/ingredients"
-  })
+    failureRedirect: "/ingredients",
+  });
 
   /* try {
     const userPayload = req.body;
@@ -66,7 +54,7 @@ exports.loginUser = async (req, res) => {
       return;
     } */
 
-    /*
+  /*
     const roles = await db.UserRole.findAll({ where: { idUsuario: user.id } });
     const rolesIds = roles.map((r) => r.idRol);
     const token = jwt.sign(
