@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
-const { sendRecoveryCodeEmail } = require("../services/mailService");
 const User = require("../models/users");
-const passport = require("passport");
-
+const { sendRecoveryCodeEmail } = require("../services/mailService");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res, next) => {
   // #swagger.tags = ['Users']
@@ -13,6 +12,7 @@ exports.createUser = async (req, res, next) => {
           schema: { $ref: '#/definitions/CreateUser' }
   } */
 
+  //TODO: Check if user already exists
   try {
     const user = new User({
       username: req.body.username,
@@ -23,15 +23,11 @@ exports.createUser = async (req, res, next) => {
     const result = await user.save();
     res.redirect("/");
   } catch (err) {
-    res.status(500).json({
-      message:
-        "Ocurrió un error al crear el usuario. Intente nuevamente. Si el error persiste, contacte al administrador del sistema",
-      err,
-    });
+    return next(err);
   }
 };
 
-exports.loginUser = async (req, res) => {
+exports.login = async (req, res) => {
   // #swagger.tags = ['Users']
   /*  #swagger.parameters['obj'] = {
           in: 'body',
@@ -39,39 +35,28 @@ exports.loginUser = async (req, res) => {
           schema: { $ref: '#/definitions/LoginUser' }
   } */
 
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/ingredients",
-  });
-
-  /* try {
-    const userPayload = req.body;
-    if (
-      userPayload.email !== testUser.email ||
-      !(await bcrypt.compare(userPayload.password, testUser.password))
-    ) {
-      res.status(401).send("Invalid credentials");
-      return;
-    } */
-
-  /*
-    const roles = await db.UserRole.findAll({ where: { idUsuario: user.id } });
-    const rolesIds = roles.map((r) => r.idRol);
-    const token = jwt.sign(
-      { userId: user.id, roles: rolesIds },
-      process.env.JWT_KEY,
-      {
-        expiresIn: "10m",
+  //TODO: Roles
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user !== null) {
+      if (
+        req.body.email === user.email &&
+        (await bcrypt.compare(req.body.password, user.password))
+      ) {
+        const token = jwt.sign({ userEmail: user.email }, process.env.JWT_KEY, {
+          expiresIn: "2 days",
+        });
+        res.status(200).json({
+          message: "Auth Passed",
+          token,
+        });
+      } else {
+        res.status(401).send("Invalid credentials");
       }
-    );
-    res.json({
-      //...user.toJSON(),
-      //token,
-      testUser,
-    });
+    }
   } catch (error) {
     res.status(500).send("Server error: " + error);
-  } */
+  }
 };
 
 exports.recoverPassword = async (req, res) => {

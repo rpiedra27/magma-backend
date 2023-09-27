@@ -1,43 +1,21 @@
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
 
-exports.checkUserIsAuthenticated = async (req, res, next) => {
-  let token;
+exports.verifyToken = async (req, res, next) => {
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      res.status(401).json({
-        error: true,
-        message: "El usuario no está autenticado",
-      });
-    } else {
-      try {
-        const decodedToken = jwt.verify(token, process.env.JWT_KEY);
-        const user = db.User.findByPk(decodedToken.userId);
-        if (!user) {
-          res.status(401).json({
-            error: true,
-            message: "El usuario no está autenticado",
-          });
-        }
-        req.userRoles = decodedToken.roles;
+    const token = req.headers.authorization.split(" ")[1];
+    jwt.verify(token, process.env.JWT_KEY, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        req.token = token;
         next();
-      } catch (error) {
-        res.status(400).json({
-          error: true,
-          message:
-            "La información enviada no es válida. Verifique que su sesión no haya expirado.",
-        });
       }
-    }
-  } else {
-    res.status(401).json({
-      error: true,
-      message: "El usuario no está autenticado",
     });
+  } else {
+    res.sendStatus(403);
   }
 };
 
@@ -57,4 +35,3 @@ exports.checkRoles = (requiredRoles) => {
     next();
   };
 };
-

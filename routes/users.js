@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   createUser,
-  loginUser,
+  login,
   recoverPassword,
   resetPassword,
   logOut
@@ -26,7 +26,7 @@ router.route("/").post(createUser);
 
 //router.route("/login").post([validateSchema(loginSchema)], loginUser);
 
-router.route("/login").post(loginUser);
+router.route("/login").post(login);
 
 router
   .route("/recover-password")
