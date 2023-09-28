@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createUser,
+  signUp,
   login,
   recoverPassword,
   resetPassword,
   logOut
 } = require("../controllers/users");
-const { checkUserIsAuthenticated, checkRoles } = require("../middlewares/auth");
+const { verifyToken, checkRoles } = require("../middlewares/auth");
 const { validateSchema } = require("../middlewares/validation");
 const { ROLES } = require("../utils/constants");
 const {
@@ -17,7 +17,7 @@ const {
   resetPasswordSchema,
 } = require("../validators/users");
 
-router.route("/").post(createUser);
+router.route("/signUp").post(signUp);
 
 /* router
   .route("/")
@@ -29,13 +29,13 @@ router.route("/").post(createUser);
 router.route("/login").post(login);
 
 router
-  .route("/recover-password")
+  .route("/recoverPassword")
   .post([validateSchema(recoverPasswordSchema)], recoverPassword);
 
 router
-  .route("/reset-password")
+  .route("/resetPassword")
   .patch([validateSchema(resetPasswordSchema)], resetPassword);
 
-router.route("/log-out").get(logOut);
+router.route("/logOut").get(logOut);
 
 module.exports = router;

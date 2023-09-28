@@ -12,7 +12,7 @@
     "https"
   ],
   "paths": {
-    "/users/": {
+    "/users/signUp": {
       "post": {
         "tags": [
           "Users"
@@ -22,13 +22,17 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "Add a user",
+            "description": "Create a new user",
             "schema": {
-              "$ref": "#/definitions/CreateUser"
+              "$ref": "#/definitions/SignUp"
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "409": {
+            "description": "Conflict"
+          }
+        }
       }
     },
     "/users/login": {
@@ -60,7 +64,7 @@
         }
       }
     },
-    "/users/recover-password": {
+    "/users/recoverPassword": {
       "post": {
         "tags": [
           "Users"
@@ -89,7 +93,7 @@
         }
       }
     },
-    "/users/reset-password": {
+    "/users/resetPassword": {
       "patch": {
         "tags": [
           "Users"
@@ -121,7 +125,7 @@
         }
       }
     },
-    "/users/log-out": {
+    "/users/logOut": {
       "get": {
         "description": "",
         "parameters": [],

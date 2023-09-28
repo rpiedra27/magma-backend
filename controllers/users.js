@@ -4,26 +4,29 @@ const { sendRecoveryCodeEmail } = require("../services/mailService");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
-exports.createUser = async (req, res, next) => {
+exports.signUp = async (req, res, next) => {
   // #swagger.tags = ['Users']
   /*  #swagger.parameters['obj'] = {
           in: 'body',
-          description: 'Add a user',
-          schema: { $ref: '#/definitions/CreateUser' }
+          description: 'Create a new user',
+          schema: { $ref: '#/definitions/SignUp' }
   } */
 
-  //TODO: Check if user already exists
-  try {
-    const user = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      password: await bcrypt.hash(req.body.password, saltRounds),
-    });
-    const result = await user.save();
-    res.redirect("/");
-  } catch (err) {
-    return next(err);
+  if ((await User.findOne({ email: req.body.email })) !== null) {
+    try {
+      const user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        password: await bcrypt.hash(req.body.password, saltRounds),
+      });
+      const result = await user.save();
+      res.redirect("/");
+    } catch (err) {
+      return next(err);
+    }
+  } else {
+    res.status(409).send("Email already in use");
   }
 };
 
@@ -111,10 +114,5 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.logOut = async (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
+  
 };

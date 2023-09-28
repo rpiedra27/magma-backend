@@ -36,3 +36,5 @@ server.listen(process.env.PORT || 8000, () =>
   }/docs`
   )
 );
+
+module.exports = server;
