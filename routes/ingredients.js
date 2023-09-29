@@ -1,8 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { listIngredients } = require("../controllers/ingredients");
-const {verifyToken} = require("../middlewares/auth");
+const {
+  getIngredients,
+  createIngredient,
+  updateIngredient,
+  deleteIngredient,
+} = require("../controllers/ingredients");
+const { verifyToken } = require("../middlewares/auth");
 
-router.route("/").get([verifyToken], listIngredients);
+router.route("/").get(getIngredients);
+
+router.route("/").post([verifyToken], createIngredient);
+
+router.route("/:id").put([verifyToken], updateIngredient);
+
+router.route("/:id").delete([verifyToken], deleteIngredient);
 
 module.exports = router;

@@ -1,44 +1,68 @@
 const Item = require("../models/items");
 const asyncHandler = require("express-async-handler");
 
-exports.drinksList = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Drinks']
-  const drinks = await Item.find({ type: "drink" }).exec();
-  res.json(drinks);
+exports.getAllItems = asyncHandler(async (req, res) => {
+  try {
+    const items = await Item.find().exec();
+    res.json(items);
+  } catch (error) {
+    res.status(500).send("Could not fetch resource: " + error);
+  }
 });
 
-exports.listPizzas = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Pizzas']
-  const pizzas = await Item.find({ type: "pizza" }).exec();
-  res.json(pizzas);
+exports.getItems = asyncHandler(async (req, res) => {
+  const resource = req.path.slice(1);
+  try {
+    const items = await Item.find({ type: resource }).exec();
+    res.json(items);
+  } catch (error) {
+    res.status(500).send("Could not fetch resource: " + error);
+  }
 });
 
-exports.listDesserts = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Desserts']
-  const desserts = await Item.find({ type: "dessert" }).exec();
-  res.json(desserts);
+exports.createItem = asyncHandler(async (req, res, next) => {
+  // #swagger.tags = ['Items']
+  if ((await Item.findOne({ name: req.body.name })) !== null) {
+    try {
+      const item = new Item({
+        name: req.body.name,
+        type: req.body.price,
+        description: req.body.description,
+        price: req.body.price,
+        image: req.body.image,
+      });
+      const newItem = await Item.save(item).exec();
+      res.json(newItem);
+    } catch (err) {
+      return next(err);
+    }
+  } else {
+    res.status(409).send("An item with that name already exists");
+  }
 });
 
-exports.listCombos = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Combos']
-  const combos = await Item.find({ type: "combo" }).exec();
-  res.json(combos);
+exports.updateItem = asyncHandler(async (req, res, next) => {
+  const item = new Item({
+    name: req.body.name,
+    type: req.body.price,
+    description: req.body.description,
+    price: req.body.price,
+    image: req.body.image,
+  });
+  try {
+    const newItem = await Item.findByIdAndUpdate(req.params.id, item).exec();
+    res.json(newItem);
+  } catch (err) {
+    return next(err);
+  }
+  res.json(item);
 });
 
-exports.listHomeCombos = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['HomeCombos']
-  const homeCombos = await Item.find({ type: "homeCombo" }).exec();
-  res.json(homeCombos);
-});
-
-exports.listHomePizzas = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['HomePizzas']
-  const homePizzas = await Item.find({ type: "homePizza" }).exec();
-  res.json(homePizzas);
-});
-
-exports.listSides = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Sides']
-  const sides = await Item.find({ type: "side" }).exec();
-  res.json(sides);
+exports.deleteItem = asyncHandler(async (req, res) => {
+  try {
+    await Item.findByIdAndDelete(req.params.id).exec();
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).send("Could not delete resource " + error);
+  }
 });

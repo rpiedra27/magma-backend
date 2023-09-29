@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { createOrder } = require("../controllers/orders");
+const {
+  getOrders,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+} = require("../controllers/orders");
+const { verifyToken } = require("../middlewares/auth");
 
-router.route("/create-order").post(createOrder);
+router.route("/:userId").get(getOrders);
 
-router.get("/users/:userId/orders/:orderId", (req, res) => {
-  // Access userId via: req.params.userId
-  res.send(req.params);
-});
+router.route("/").post([verifyToken], createOrder);
+
+router.route("/").put([verifyToken], updateOrder);
+
+router.route("/").delete([verifyToken], deleteOrder);
 
 module.exports = router;
