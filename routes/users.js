@@ -5,7 +5,7 @@ const {
   login,
   recoverPassword,
   resetPassword,
-  logOut
+  logOut,
 } = require("../controllers/users");
 const { verifyToken, checkRoles } = require("../middlewares/auth");
 const { validateSchema } = require("../middlewares/validation");
@@ -17,16 +17,14 @@ const {
   resetPasswordSchema,
 } = require("../validators/users");
 
-router.route("/signUp").post(signUp);
-
 /* router
   .route("/")
   .get([checkUserIsAuthenticated, checkRoles([ROLES.ADMIN])])
   .post([validateSchema(createUserSchema)], createUser); */
 
-//router.route("/login").post([validateSchema(loginSchema)], loginUser);
+router.route("/signUp").post([validateSchema(createUserSchema)], signUp);
 
-router.route("/login").post(login);
+router.route("/login").post([validateSchema(loginSchema)], login);
 
 router
   .route("/recoverPassword")
@@ -36,6 +34,6 @@ router
   .route("/resetPassword")
   .patch([validateSchema(resetPasswordSchema)], resetPassword);
 
-router.route("/logOut").get(logOut);
+router.route("/logOut").get([verifyToken], logOut);
 
 module.exports = router;

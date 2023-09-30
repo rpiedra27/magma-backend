@@ -17,10 +17,9 @@ exports.signUp = async (req, res, next) => {
       const user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password,
         password: await bcrypt.hash(req.body.password, saltRounds),
       });
-      const result = await user.save();
+      await user.save();
       res.redirect("/");
     } catch (err) {
       return next(err);

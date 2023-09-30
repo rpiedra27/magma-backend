@@ -6,13 +6,27 @@ const {
   updateIngredient,
   deleteIngredient,
 } = require("../controllers/ingredients");
+const { createIngredientSchema } = require("../validators/ingredients");
+const { validateSchema } = require("../middlewares/validation");
 const { verifyToken } = require("../middlewares/auth");
 
 router.route("/").get(getIngredients);
 
-router.route("/").post([verifyToken], createIngredient);
+router
+  .route("/")
+  .post(
+    [verifyToken],
+    [validateSchema(createIngredientSchema)],
+    createIngredient
+  );
 
-router.route("/:id").put([verifyToken], updateIngredient);
+router
+  .route("/:id")
+  .put(
+    [verifyToken],
+    [validateSchema(createIngredientSchema)],
+    updateIngredient
+  );
 
 router.route("/:id").delete([verifyToken], deleteIngredient);
 

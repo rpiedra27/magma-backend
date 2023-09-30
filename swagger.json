@@ -31,6 +31,9 @@
         "responses": {
           "409": {
             "description": "Conflict"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -57,6 +60,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           },
           "500": {
             "description": "Internal Server Error"
@@ -128,8 +134,18 @@
     "/users/logOut": {
       "get": {
         "description": "",
-        "parameters": [],
-        "responses": {}
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden"
+          }
+        }
       }
     },
     "/ingredients/": {
@@ -190,6 +206,9 @@
           },
           "409": {
             "description": "Conflict"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -240,6 +259,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -325,6 +347,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -367,6 +392,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -450,6 +478,9 @@
           },
           "409": {
             "description": "Conflict"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -518,6 +549,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
