@@ -2,11 +2,11 @@
   "name": "magma-backend",
   "version": "1.0.0",
   "description": "Backend para la pizzeria Magma",
-  "main": "start.js",
+  "main": "swagger.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "start": "node start.js",
-    "dev": "nodemon start.js"
+    "start": "node swagger.js",
+    "dev": "nodemon swagger.js"
   },
   "keywords": [],
   "author": "Rodrigo Piedra, Asdrubal Villegas",
@@ -24,8 +24,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^7.4.4",
     "nodemailer": "^6.7.5",
-    "swagger-autogen": "^2.21.2",
-    "swagger-ui-express": "^4.4.0"
+    "swagger-autogen": "^2.23.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.1.7",

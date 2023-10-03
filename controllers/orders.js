@@ -2,7 +2,9 @@ const Order = require("../models/orders");
 const asyncHandler = require("express-async-handler");
 
 exports.getOrders = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Ingredients']
+  /* #swagger.tags = ['Orders']
+     #swagger.description = 'Retrieves all the existing orders'
+  */
   try {
     const orders = await Order.find().exec();
     res.json(orders);
@@ -12,11 +14,12 @@ exports.getOrders = asyncHandler(async (req, res) => {
 });
 
 exports.createOrder = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Order']
-  /*  #swagger.parameters['obj'] = {
+  /* #swagger.tags = ['Orders']
+      #swagger.description = 'Creates a new order'
+      #swagger.parameters['obj'] = {
           in: 'body',
-          description: 'Create an order placed by a customer',
-          schema: { $ref: '#/definitions/createOrder' }
+          description: 'New orders to be created',
+          schema: { $ref: '#/definitions/CreateOrder' }
   } */
   try {
     const order = new Order({
@@ -33,7 +36,14 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateOrder = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Orders']
+  /* #swagger.tags = ['Orders']
+      #swagger.description = 'Updates an existing order'
+      #swagger.parameters['obj'] = {
+          in: 'body',
+          description: 'ID of the order to be updated',
+          schema: { $ref: '#/definitions/UpdateOrder' }
+  } */
+  const orderId = req.path.slice(1);
   const order = new Order({
     user: req.body.user,
     cost: req.body.cost,
@@ -41,7 +51,7 @@ exports.updateOrder = asyncHandler(async (req, res, next) => {
     items: req.body.items,
   });
   try {
-    const newOrder = await Order.findByIdAndUpdate(req.params.id, order).exec();
+    const newOrder = await Order.findByIdAndUpdate(orderId, order).exec();
     res.json(newOrder);
   } catch (err) {
     return next(err);
@@ -50,9 +60,13 @@ exports.updateOrder = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteOrder = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Orders']
+  /* #swagger.tags = ['Orders']
+     #swagger.description = 'Deletes an existing order'
+     #swagger.parameters['id'] = { description: 'Id of the order to be deleted' }
+  */
+  const orderId = req.path.slice(1);
   try {
-    await Order.findByIdAndDelete(req.params.id).exec();
+    await Order.findByIdAndDelete(orderId).exec();
     res.status(204).send();
   } catch (error) {
     res.status(500).send("Could not delete resource " + error);

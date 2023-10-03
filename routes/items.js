@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getItems,
+  getItemsOfType,
   getAllItems,
   createItem,
   updateItem,
@@ -13,7 +13,7 @@ const { verifyToken } = require("../middlewares/auth");
 
 router.route("/").get(getAllItems);
 
-router.route("/:itemName").get(getItems);
+router.route("/:itemType").get(getItemsOfType);
 
 router
   .route("/")

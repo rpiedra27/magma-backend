@@ -2,10 +2,10 @@
   "swagger": "2.0",
   "info": {
     "title": "API Pizza Magma",
-    "description": "API de la Pizzería Magma, maneja cuentas y órdenes de los usuarios e items de los menús.",
+    "description": "API for Magma Pizza, handles accounts, user orders, and menu items.",
     "version": "1.0.0"
   },
-  "host": "evening-refuge-56391.herokuapp.com",
+  "host": "localhost:8000",
   "basePath": "/",
   "schemes": [
     "http",
@@ -17,12 +17,12 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Creates a new user",
         "parameters": [
           {
             "name": "obj",
             "in": "body",
-            "description": "Create a new user",
+            "description": "The user to be created",
             "schema": {
               "$ref": "#/definitions/SignUp"
             }
@@ -43,12 +43,12 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Creates a new user session",
         "parameters": [
           {
             "name": "obj",
             "in": "body",
-            "description": "Add a user",
+            "description": "The user that logged in",
             "schema": {
               "$ref": "#/definitions/LoginUser"
             }
@@ -75,12 +75,12 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Generates a recovery code that will be used as a temporary password until  the user finishes the account recovery process",
         "parameters": [
           {
             "name": "obj",
             "in": "body",
-            "description": "Add a user",
+            "description": "The email address linked to the users account",
             "schema": {
               "$ref": "#/definitions/RecoverPassword"
             }
@@ -104,14 +104,24 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Resets a user password",
         "parameters": [
           {
-            "name": "obj",
+            "name": "body",
             "in": "body",
-            "description": "Add a user",
             "schema": {
-              "$ref": "#/definitions/ResetPassword"
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "code": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
             }
           }
         ],
@@ -133,6 +143,9 @@
     },
     "/users/logOut": {
       "get": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -153,8 +166,7 @@
         "tags": [
           "Ingredients"
         ],
-        "description": "",
-        "parameters": [],
+        "description": "Retrieves all the existing ingredients",
         "responses": {
           "200": {
             "description": "OK"
@@ -168,7 +180,7 @@
         "tags": [
           "Ingredients"
         ],
-        "description": "",
+        "description": "Creates a new item",
         "parameters": [
           {
             "name": "authorization",
@@ -176,24 +188,11 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "New ingredient to be created",
             "schema": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "example": "any"
-                },
-                "label": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "type": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateIngredient"
             }
           }
         ],
@@ -218,7 +217,7 @@
         "tags": [
           "Ingredients"
         ],
-        "description": "",
+        "description": "Updates an existing ingredient",
         "parameters": [
           {
             "name": "id",
@@ -232,24 +231,11 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "ID of the ingredient to be updated",
             "schema": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "type": {
-                  "example": "any"
-                },
-                "value": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UpdateIngredient"
             }
           }
         ],
@@ -269,13 +255,14 @@
         "tags": [
           "Ingredients"
         ],
-        "description": "",
+        "description": "Deletes an existing item",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id of the ingredient to be deleted"
           },
           {
             "name": "authorization",
@@ -299,9 +286,9 @@
     "/orders/{userId}": {
       "get": {
         "tags": [
-          "Ingredients"
+          "Orders"
         ],
-        "description": "",
+        "description": "Retrieves all the existing orders",
         "parameters": [
           {
             "name": "userId",
@@ -323,9 +310,9 @@
     "/orders/": {
       "post": {
         "tags": [
-          "Order"
+          "Orders"
         ],
-        "description": "",
+        "description": "Creates a new order",
         "parameters": [
           {
             "name": "authorization",
@@ -335,9 +322,9 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "Create an order placed by a customer",
+            "description": "New orders to be created",
             "schema": {
-              "$ref": "#/definitions/createOrder"
+              "$ref": "#/definitions/CreateOrder"
             }
           }
         ],
@@ -357,7 +344,7 @@
         "tags": [
           "Orders"
         ],
-        "description": "",
+        "description": "Updates an existing order",
         "parameters": [
           {
             "name": "authorization",
@@ -365,24 +352,11 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "ID of the order to be updated",
             "schema": {
-              "type": "object",
-              "properties": {
-                "user": {
-                  "example": "any"
-                },
-                "cost": {
-                  "example": "any"
-                },
-                "date": {
-                  "example": "any"
-                },
-                "items": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UpdateOrder"
             }
           }
         ],
@@ -402,11 +376,17 @@
         "tags": [
           "Orders"
         ],
-        "description": "",
+        "description": "Deletes an existing order",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "Id of the order to be deleted",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -425,8 +405,10 @@
     },
     "/items/": {
       "get": {
-        "description": "",
-        "parameters": [],
+        "tags": [
+          "Items"
+        ],
+        "description": "Retrieves all the items",
         "responses": {
           "200": {
             "description": "OK"
@@ -440,7 +422,7 @@
         "tags": [
           "Items"
         ],
-        "description": "",
+        "description": "Creates a new item",
         "parameters": [
           {
             "name": "authorization",
@@ -448,24 +430,11 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "New item to be created",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "image": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateItem"
             }
           }
         ],
@@ -485,15 +454,19 @@
         }
       }
     },
-    "/items/{itemName}": {
+    "/items/{itemType}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Items"
+        ],
+        "description": "Retrieves all the items of a given type",
         "parameters": [
           {
-            "name": "itemName",
+            "name": "itemType",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "The type of items that will be retrieved"
           }
         ],
         "responses": {
@@ -508,7 +481,10 @@
     },
     "/items/{id}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Items"
+        ],
+        "description": "Updates an existing item",
         "parameters": [
           {
             "name": "id",
@@ -522,24 +498,11 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "obj",
             "in": "body",
+            "description": "ID of the item to be updated",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "image": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UpdateItem"
             }
           }
         ],
@@ -556,13 +519,17 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Items"
+        ],
+        "description": "Deletes an existing item",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the item to be deleted"
           },
           {
             "name": "authorization",
@@ -585,16 +552,16 @@
     }
   },
   "definitions": {
-    "CreateUser": {
+    "SignUp": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "example": "José Rodríguez Pérez"
+          "example": "John Doe"
         },
         "email": {
           "type": "string",
-          "example": "jose@correo.com"
+          "example": "john@mail.com"
         },
         "password": {
           "type": "string",
@@ -602,12 +569,12 @@
         }
       }
     },
-    "LoginUser": {
+    "Login": {
       "type": "object",
       "properties": {
         "email": {
           "type": "string",
-          "example": "jose@correo.com"
+          "example": "name@mail.com"
         },
         "password": {
           "type": "string",
@@ -620,7 +587,7 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "jose@correo.com"
+          "example": "name@mail.com"
         }
       }
     },
@@ -629,7 +596,7 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "jose@correo.com"
+          "example": "name@mail.com"
         },
         "password": {
           "type": "string",
@@ -638,6 +605,127 @@
         "code": {
           "type": "number",
           "example": 123456
+        }
+      }
+    },
+    "CreateIngredient": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "example": "Diet Soda 250ml"
+        },
+        "type": {
+          "type": "string",
+          "example": "drink"
+        },
+        "price": {
+          "type": "number",
+          "example": 1000
+        },
+        "value": {
+          "type": "string",
+          "example": "diet-soda"
+        }
+      }
+    },
+    "UpdateIngredient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "64eaa86d4bf1c0a42a498836"
+        },
+        "label": {
+          "type": "string",
+          "example": "Carne molida"
+        },
+        "type": {
+          "type": "string",
+          "example": "meat"
+        },
+        "price": {
+          "type": "number",
+          "example": 500
+        },
+        "value": {
+          "type": "string",
+          "example": "beef"
+        }
+      }
+    },
+    "CreateItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Soda"
+        },
+        "type": {
+          "type": "string",
+          "example": "drink"
+        },
+        "description": {
+          "type": "string",
+          "example": "1 Liter"
+        },
+        "price": {
+          "type": "number",
+          "example": 1000
+        },
+        "image": {
+          "type": "string",
+          "example": "https://magma.s3.amazonaws.com/drinks/soda.png"
+        }
+      }
+    },
+    "UpdateItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "64eaa86d4bf1c0a42a498836"
+        },
+        "name": {
+          "type": "string",
+          "example": "Soda"
+        },
+        "type": {
+          "type": "string",
+          "example": "drink"
+        },
+        "description": {
+          "type": "string",
+          "example": "1 Liter"
+        },
+        "price": {
+          "type": "number",
+          "example": 1000
+        },
+        "image": {
+          "type": "string",
+          "example": "https://magma.s3.amazonaws.com/drinks/soda.png"
+        }
+      }
+    },
+    "CreateOrder": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "Soda"
+        },
+        "cost": {
+          "type": "string",
+          "example": "drink"
+        },
+        "date": {
+          "type": "string",
+          "example": "1 Liter"
+        },
+        "items": {
+          "type": "string",
+          "example": "1000"
         }
       }
     }

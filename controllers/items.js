@@ -2,6 +2,9 @@ const Item = require("../models/items");
 const asyncHandler = require("express-async-handler");
 
 exports.getAllItems = asyncHandler(async (req, res) => {
+  /* #swagger.tags = ['Items']
+     #swagger.description = 'Retrieves all the items'
+  */
   try {
     const items = await Item.find().exec();
     res.json(items);
@@ -10,10 +13,14 @@ exports.getAllItems = asyncHandler(async (req, res) => {
   }
 });
 
-exports.getItems = asyncHandler(async (req, res) => {
-  const resource = req.path.slice(1);
+exports.getItemsOfType = asyncHandler(async (req, res) => {
+  /* #swagger.tags = ['Items']
+     #swagger.description = 'Retrieves all the items of a given type'
+     #swagger.parameters['itemType'] = { description: 'The type of items that will be retrieved' }
+  */
+  const type = req.path.slice(1);
   try {
-    const items = await Item.find({ type: resource }).exec();
+    const items = await Item.find({ type: type }).exec();
     res.json(items);
   } catch (error) {
     res.status(500).send("Could not fetch resource: " + error);
@@ -21,7 +28,13 @@ exports.getItems = asyncHandler(async (req, res) => {
 });
 
 exports.createItem = asyncHandler(async (req, res, next) => {
-  // #swagger.tags = ['Items']
+  /* #swagger.tags = ['Items']
+    #swagger.description = 'Creates a new item'
+    #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'New item to be created',
+        schema: { $ref: '#/definitions/CreateItem' }
+  } */
   if ((await Item.findOne({ name: req.body.name })) !== null) {
     try {
       const item = new Item({
@@ -42,6 +55,13 @@ exports.createItem = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateItem = asyncHandler(async (req, res, next) => {
+  /* #swagger.tags = ['Items']
+     #swagger.description = 'Updates an existing item'
+     #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'ID of the item to be updated',
+        schema: { $ref: '#/definitions/UpdateItem' }
+  } */
   const item = new Item({
     name: req.body.name,
     type: req.body.price,
@@ -49,8 +69,9 @@ exports.updateItem = asyncHandler(async (req, res, next) => {
     price: req.body.price,
     image: req.body.image,
   });
+  const itemId = req.path.slice(1);
   try {
-    const newItem = await Item.findByIdAndUpdate(req.params.id, item).exec();
+    const newItem = await Item.findByIdAndUpdate(itemId, item).exec();
     res.json(newItem);
   } catch (err) {
     return next(err);
@@ -59,8 +80,13 @@ exports.updateItem = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteItem = asyncHandler(async (req, res) => {
+  /* #swagger.tags = ['Items']
+     #swagger.description = 'Deletes an existing item'
+     #swagger.parameters['id'] = { description: 'ID of the item to be deleted' }
+  */
+  const itemId = req.path.slice(1);
   try {
-    await Item.findByIdAndDelete(req.params.id).exec();
+    await Item.findByIdAndDelete(itemId).exec();
     res.status(204).send();
   } catch (error) {
     res.status(500).send("Could not delete resource " + error);

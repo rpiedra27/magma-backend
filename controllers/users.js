@@ -5,10 +5,11 @@ const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 exports.signUp = async (req, res, next) => {
-  // #swagger.tags = ['Users']
-  /*  #swagger.parameters['obj'] = {
+  /* #swagger.tags = ['Users']
+     #swagger.description = 'Creates a new user'
+     #swagger.parameters['obj'] = {
           in: 'body',
-          description: 'Create a new user',
+          description: 'The user to be created',
           schema: { $ref: '#/definitions/SignUp' }
   } */
 
@@ -30,11 +31,12 @@ exports.signUp = async (req, res, next) => {
 };
 
 exports.login = async (req, res) => {
-  // #swagger.tags = ['Users']
-  /*  #swagger.parameters['obj'] = {
-          in: 'body',
-          description: 'Add a user',
-          schema: { $ref: '#/definitions/LoginUser' }
+  /* #swagger.tags = ['Users']
+     #swagger.description = 'Creates a new user session'
+     #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The user that logged in',
+        schema: { $ref: '#/definitions/LoginUser' }
   } */
 
   //TODO: Roles
@@ -62,15 +64,16 @@ exports.login = async (req, res) => {
 };
 
 exports.recoverPassword = async (req, res) => {
-  // #swagger.tags = ['Users']
-  /*  #swagger.parameters['obj'] = {
-          in: 'body',
-          description: 'Add a user',
-          schema: { $ref: '#/definitions/RecoverPassword' }
+  /* #swagger.tags = ['Users']
+     #swagger.description = 'Generates a recovery code that will be used as a temporary password until
+      the user finishes the account recovery process'
+     #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'The email address linked to the users account',
+        schema: { $ref: '#/definitions/RecoverPassword' }
   } */
   try {
     const userPayload = req.body;
-
     const randomToken = Math.floor(
       Math.random() * (999999 - 100000 + 1) + 100000
     );
@@ -81,31 +84,26 @@ exports.recoverPassword = async (req, res) => {
   }
 };
 
+//TODO
 exports.resetPassword = async (req, res) => {
-  // #swagger.tags = ['Users']
-  /*  #swagger.parameters['obj'] = {
-          in: 'body',
-          description: 'Add a user',
-          schema: { $ref: '#/definitions/ResetPassword' }
+  /* #swagger.tags = ['Users']
+     #swagger.description = 'Resets a user password'
+     #swagger.parameters['obj'] = {
+        in: 'body',
+        description = 'dark',
+        schema: { $ref: '#/definitions/ResetPassword' }
   } */
-  const testUser = {
-    name: "Rodrigo",
-    email: "rodrigo.piedra@ucr.ac.cr",
-    password: "$2b$10$RwmQLVkd8YhnfK7paOd3W.oJo5/Zq3UXoIzUsuq.Tyf9pQHi7mzTG",
-    code: 963221,
-  };
-
   try {
-    const userPayload = req.body;
+    const user = await User.findOne({ email: req.body.email });
     if (
-      testUser.email !== userPayload.email ||
-      testUser.code !== parseInt(userPayload.code)
+      testUser.email !== req.body.email ||
+      testUser.code !== parseInt(req.body.code)
     ) {
       res.status(401).send("Datos no válidos");
       return;
     }
 
-    testUser.password = await bcrypt.hash(userPayload.password, saltRounds);
+    testUser.password = await bcrypt.hash(req.body.password, saltRounds);
     res.json({ testUser });
   } catch (error) {
     res.status(500).send("Server error: " + error);
@@ -113,5 +111,5 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.logOut = async (req, res, next) => {
-  
+  // #swagger.tags = ['Users']
 };
