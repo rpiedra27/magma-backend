@@ -8,14 +8,16 @@ const {
 } = require("../controllers/ingredients");
 const { createIngredientSchema } = require("../validators/ingredients");
 const { validateSchema } = require("../middlewares/validation");
-const { verifyToken } = require("../middlewares/auth");
+const { isAuthenticated, checkRoles } = require("../middlewares/auth");
+const { ROLES } = require("../utils/constants");
 
 router.route("/").get(getIngredients);
 
 router
   .route("/")
   .post(
-    [verifyToken],
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
     [validateSchema(createIngredientSchema)],
     createIngredient
   );
@@ -23,11 +25,14 @@ router
 router
   .route("/:id")
   .put(
-    [verifyToken],
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
     [validateSchema(createIngredientSchema)],
     updateIngredient
   );
 
-router.route("/:id").delete([verifyToken], deleteIngredient);
+router
+  .route("/:id")
+  .delete([isAuthenticated], [checkRoles([ROLES.ADMIN])], deleteIngredient);
 
 module.exports = router;

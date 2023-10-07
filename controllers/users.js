@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/users");
 const { sendRecoveryCodeEmail } = require("../services/mailService");
 const saltRounds = 10;
-const jwt = require("jsonwebtoken");
 
 exports.signUp = async (req, res, next) => {
   /* #swagger.tags = ['Users']
@@ -19,6 +18,7 @@ exports.signUp = async (req, res, next) => {
         username: req.body.username,
         email: req.body.email,
         password: await bcrypt.hash(req.body.password, saltRounds),
+        roles: req.body.roles
       });
       await user.save();
       res.redirect("/");
@@ -39,21 +39,30 @@ exports.login = async (req, res) => {
         schema: { $ref: '#/definitions/LoginUser' }
   } */
 
-  //TODO: Roles
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (user !== null) {
+    console.log(user);
+    if (user) {
       if (
         req.body.email === user.email &&
         (await bcrypt.compare(req.body.password, user.password))
       ) {
-        const token = jwt.sign({ userEmail: user.email }, process.env.JWT_KEY, {
+        req.session.regenerate(function (err) {
+          if (err) next(err);
+          req.session.user = user.email;
+          req.session.roles = user.roles;
+          req.session.save(function (err) {
+            if (err) return next(err);
+            res.status(200).send();
+          });
+        });
+        /* const token = jwt.sign({ userEmail: user.email }, process.env.JWT_KEY, {
           expiresIn: "2 days",
         });
         res.status(200).json({
           message: "Auth Passed",
           token,
-        });
+        }); */
       } else {
         res.status(401).send("Invalid credentials");
       }
@@ -110,6 +119,15 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-exports.logOut = async (req, res, next) => {
-  // #swagger.tags = ['Users']
+exports.logout = async (req, res, next) => {
+  /* #swagger.tags = ['Users']
+     #swagger.description = 'Clears a user session'
+  */
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(400).send("Unable to log out");
+    } else {
+      res.status(200);
+    }
+  });
 };

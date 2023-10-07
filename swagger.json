@@ -141,22 +141,21 @@
         }
       }
     },
-    "/users/logOut": {
-      "get": {
+    "/users/logout": {
+      "post": {
         "tags": [
           "Users"
         ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "description": "Clears a user session",
         "responses": {
-          "403": {
-            "description": "Forbidden"
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -183,11 +182,6 @@
         "description": "Creates a new item",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "New ingredient to be created",
@@ -199,6 +193,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -226,11 +223,6 @@
             "type": "string"
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "ID of the ingredient to be updated",
@@ -242,6 +234,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -263,16 +258,14 @@
             "required": true,
             "type": "string",
             "description": "Id of the ingredient to be deleted"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -315,11 +308,6 @@
         "description": "Creates a new order",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "New orders to be created",
@@ -331,6 +319,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -347,11 +338,6 @@
         "description": "Updates an existing order",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "ID of the order to be updated",
@@ -363,6 +349,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -379,11 +368,6 @@
         "description": "Deletes an existing order",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "id",
             "description": "Id of the order to be deleted",
             "in": "query",
@@ -393,6 +377,9 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -425,11 +412,6 @@
         "description": "Creates a new item",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "New item to be created",
@@ -441,6 +423,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -493,11 +478,6 @@
             "type": "string"
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "description": "ID of the item to be updated",
@@ -509,6 +489,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -530,16 +513,14 @@
             "required": true,
             "type": "string",
             "description": "ID of the item to be deleted"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"

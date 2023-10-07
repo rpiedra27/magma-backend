@@ -8,18 +8,31 @@ const {
 } = require("../controllers/orders");
 const { createOrderSchema } = require("../validators/orders");
 const { validateSchema } = require("../middlewares/validation");
-const { verifyToken } = require("../middlewares/auth");
+const { isAuthenticated, checkRoles } = require("../middlewares/auth");
+const { ROLES } = require("../utils/constants");
 
 router.route("/:userId").get(getOrders);
 
 router
   .route("/")
-  .post([verifyToken], [validateSchema(createOrderSchema)], createOrder);
+  .post(
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
+    [validateSchema(createOrderSchema)],
+    createOrder
+  );
 
 router
   .route("/")
-  .put([verifyToken], [validateSchema(createOrderSchema)], updateOrder);
+  .put(
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
+    [validateSchema(createOrderSchema)],
+    updateOrder
+  );
 
-router.route("/").delete([verifyToken], deleteOrder);
+router
+  .route("/")
+  .delete([isAuthenticated], [checkRoles([ROLES.ADMIN])], deleteOrder);
 
 module.exports = router;

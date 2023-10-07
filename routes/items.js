@@ -9,7 +9,8 @@ const {
 } = require("../controllers/items");
 const { createItemSchema } = require("../validators/items");
 const { validateSchema } = require("../middlewares/validation");
-const { verifyToken } = require("../middlewares/auth");
+const { isAuthenticated, checkRoles } = require("../middlewares/auth");
+const { ROLES } = require("../utils/constants");
 
 router.route("/").get(getAllItems);
 
@@ -17,12 +18,24 @@ router.route("/:itemType").get(getItemsOfType);
 
 router
   .route("/")
-  .post([verifyToken], [validateSchema(createItemSchema)], createItem);
+  .post(
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
+    [validateSchema(createItemSchema)],
+    createItem
+  );
 
 router
   .route("/:id")
-  .put([verifyToken], [validateSchema(createItemSchema)], updateItem);
+  .put(
+    [isAuthenticated],
+    [checkRoles([ROLES.ADMIN])],
+    [validateSchema(createItemSchema)],
+    updateItem
+  );
 
-router.route("/:id").delete([verifyToken], deleteItem);
+router
+  .route("/:id")
+  .delete([isAuthenticated], [checkRoles([ROLES.ADMIN])], deleteItem);
 
 module.exports = router;

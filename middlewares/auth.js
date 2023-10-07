@@ -1,5 +1,13 @@
 const jwt = require("jsonwebtoken");
 
+exports.isAuthenticated = async (req, res, next) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.status(401).send();
+  }
+};
+
 exports.verifyToken = async (req, res, next) => {
   if (
     req.headers.authorization &&
@@ -8,30 +16,27 @@ exports.verifyToken = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     jwt.verify(token, process.env.JWT_KEY, async (err, authData) => {
       if (err) {
-        res.sendStatus(403);
+        res.sendStatus(401);
       } else {
         req.token = token;
         next();
       }
     });
   } else {
-    res.sendStatus(403);
+    res.sendStatus(401);
   }
 };
 
 exports.checkRoles = (requiredRoles) => {
+  const allowedRoles = new Set(requiredRoles);
   return async (req, res, next) => {
-    const userRoles = req.userRoles;
-    const role = userRoles.find((r) => {
-      return requiredRoles.find((rr) => rr === r) !== undefined;
-    });
-    if (role === undefined) {
-      return res.status(401).json({
+    if (req.session.roles.some((role) => allowedRoles.has(role))) {
+      next();
+    } else {
+      res.status(403).json({
         error: true,
-        message:
-          "El usuario no tiene los permisos necesarios para acceder a este recurso",
+        message: "Unauthorized to access this resource",
       });
     }
-    next();
   };
 };
