@@ -12,16 +12,16 @@ exports.signUp = async (req, res, next) => {
           schema: { $ref: '#/definitions/SignUp' }
   } */
 
-  if ((await User.findOne({ email: req.body.email })) !== null) {
+  if ((await User.findOne({ email: req.body.email })) === null) {
     try {
       const user = new User({
         username: req.body.username,
         email: req.body.email,
         password: await bcrypt.hash(req.body.password, saltRounds),
-        roles: req.body.roles
+        roles: req.body.roles,
       });
       await user.save();
-      res.redirect("/");
+      res.status(200).send("User created succesfully");
     } catch (err) {
       return next(err);
     }

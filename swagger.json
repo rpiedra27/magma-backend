@@ -29,6 +29,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "409": {
             "description": "Conflict"
           },
